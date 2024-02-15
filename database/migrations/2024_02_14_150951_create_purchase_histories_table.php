@@ -6,25 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('purchase_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('comic_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->text('comment');
+            $table->dateTime('fecha');
+            $table->foreignId('carrito_id')->constrained();
+            $table->decimal('precio', 8, 2);
+            $table->unsignedInteger('cantidad');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('purchase_histories');
     }
 };

@@ -22,4 +22,3 @@ class Carrito extends Model
         return $this->belongsToMany(Comic::class, 'carrito_comics')->withPivot('cantidad');
     }
 }
-

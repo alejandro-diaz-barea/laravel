@@ -1,19 +1,40 @@
 <?php
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\ComicController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::prefix('v1')->group(function () {
+    Route::apiResource('comics', ComicController::class)->middleware('api');
+});
 
-Route::get('/', function(){
-return "Hello world";
+Route::apiResource('v1/users', App\Http\Controllers\Api\V1\UserController::class)->middleware('api');
+
+Route::apiResource('v1/comments', App\Http\Controllers\Api\V1\CommentController::class)->middleware('api');
+
+Route::apiResource('v1/ratings', App\Http\Controllers\Api\V1\RatingController::class)->middleware('api');
+
+Route::apiResource('v1/carritos', App\Http\Controllers\Api\V1\CarritoController::class)->middleware('api');
+
+Route::apiResource('v1/purchase-histories', App\Http\Controllers\Api\V1\PurchaseHistoryController::class)->middleware('api');
+
+
+Route::group([
+'middleware' => 'api',
+'prefix' => 'v1/auth'
+], function ($router) {
+Route::post('login', [\App\Http\Controllers\Api\V1\AuthController::class,
+
+'login'])->name('login');
+
+Route::post('logout', [\App\Http\Controllers\Api\V1\AuthController::class,
+
+'logout'])->name('logout');
+
+Route::post('refresh', [\App\Http\Controllers\Api\V1\AuthController::class,
+
+'refresh'])->name('refresh');
+
+Route::post('me', [\App\Http\Controllers\Api\V1\AuthController::class,
+
+'me'])->name('me');
+
 });

@@ -11,20 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carrito_comics', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carrito_id')->constrained();
             $table->foreignId('comic_id')->constrained();
-            $table->unsignedInteger('cantidad');
+            $table->foreignId('user_id')->constrained();
+            $table->text('comment');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('carrito_comics');
+        Schema::dropIfExists('comments');
     }
 };
