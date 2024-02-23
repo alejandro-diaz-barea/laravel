@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Comic;
@@ -24,24 +23,26 @@ class ComicController extends Controller
     {
         // Validar los datos recibidos en la solicitud
         $request->validate([
+            'title' => 'required',
             'stock' => 'required',
-            'numero_de_comic' => 'required',
-            'escritores' => 'required',
-            'dibujante' => 'required',
+            'comic_number' => 'required',
+            'writers' => 'required',
+            'artist' => 'required',
             'description' => 'required',
             'price' => 'required',
-            'imagen_url' => 'required|url',
+            'image_url' => 'required|url',
         ]);
 
         // Crear un nuevo cómic con los datos recibidos en la solicitud
         $comic = new Comic();
+        $comic->title = $request->input('title');
         $comic->stock = $request->input('stock');
-        $comic->numero_de_comic = $request->input('numero_de_comic');
-        $comic->escritores = $request->input('escritores');
-        $comic->dibujante = $request->input('dibujante');
+        $comic->comic_number = $request->input('comic_number');
+        $comic->writers = $request->input('writers');
+        $comic->artist = $request->input('artist');
         $comic->description = $request->input('description');
         $comic->price = $request->input('price');
-        $comic->imagen_url = $request->input('imagen_url');
+        $comic->image_url = $request->input('image_url');
 
         // Guardar el cómic en la base de datos
         $comic->save();
@@ -58,23 +59,25 @@ class ComicController extends Controller
     {
         // Validar los datos recibidos en la solicitud
         $request->validate([
+            'title' => 'required',
             'stock' => 'required',
-            'numero_de_comic' => 'required',
-            'escritores' => 'required',
-            'dibujante' => 'required',
+            'comic_number' => 'required',
+            'writers' => 'required',
+            'artist' => 'required',
             'description' => 'required',
             'price' => 'required',
-            'imagen_url' => 'required|url',
+            'image_url' => 'required|url',
         ]);
 
         // Actualizar los datos del cómic con los recibidos en la solicitud
+        $comic->title = $request->input('title');
         $comic->stock = $request->input('stock');
-        $comic->numero_de_comic = $request->input('numero_de_comic');
-        $comic->escritores = $request->input('escritores');
-        $comic->dibujante = $request->input('dibujante');
+        $comic->comic_number = $request->input('comic_number');
+        $comic->writers = $request->input('writers');
+        $comic->artist = $request->input('artist');
         $comic->description = $request->input('description');
         $comic->price = $request->input('price');
-        $comic->imagen_url = $request->input('imagen_url');
+        $comic->image_url = $request->input('image_url');
 
         // Guardar los cambios en la base de datos
         $comic->save();
