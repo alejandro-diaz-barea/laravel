@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +20,11 @@ class Carrito extends Model
 
     public function comics()
     {
-        return $this->belongsToMany(Comic::class, 'carrito_comics')->withPivot('cantidad');
+        return $this->belongsToMany(Comic::class, 'carrito_comic')->withPivot('cantidad');
+    }
+
+    public function purchaseHistories()
+    {
+        return $this->hasMany(PurchaseHistory::class);
     }
 }

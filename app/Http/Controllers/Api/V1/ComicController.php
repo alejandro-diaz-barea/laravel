@@ -92,4 +92,18 @@ class ComicController extends Controller
 
         return response()->json(['message' => 'Cómic eliminado exitosamente']);
     }
+
+    public function createRandomOffers()
+    {
+        // Obtener 10 cómics al azar
+        $comics = Comic::inRandomOrder()->limit(10)->get();
+
+        foreach ($comics as $comic) {
+            // Aplicar descuento del 50%
+            $comic->price = $comic->price * 0.5;
+            $comic->save();
+        }
+
+        return response()->json(['message' => 'Ofertas aleatorias creadas exitosamente']);
+    }
 }

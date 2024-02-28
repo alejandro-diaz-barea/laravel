@@ -10,7 +10,6 @@ class RatingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
     }
 
     public function index()
@@ -20,21 +19,22 @@ class RatingController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validar los datos recibidos en la solicitud
-        $request->validate([
-            // Coloca aquí las reglas de validación para los datos de la calificación
-        ]);
+{
+    // Validar los datos de entrada
+    $validatedData = $request->validate([
+        'rating' => 'required|integer',
+        'comic_id' => 'required|exists:comics,id',
+    ]);
 
-        // Crear una nueva calificación con los datos recibidos en la solicitud
-        $rating = new Rating();
-        // Llenar la calificación con los datos recibidos en la solicitud
-        // $rating->campo = $request->input('campo');
-        // Guardar la calificación en la base de datos
-        $rating->save();
+    // Crear la calificación en la base de datos
+    $rating = new Rating();
+    $rating->rating = $validatedData['rating'];
+    $rating->comic_id = $validatedData['comic_id'];
+    $rating->save();
 
-        return response()->json(['message' => 'Calificación creada exitosamente']);
-    }
+    return response()->json(['message' => 'Calificación almacenada correctamente'], 201);
+}
+
 
     public function show(Rating $rating)
     {
@@ -45,11 +45,12 @@ class RatingController extends Controller
     {
         // Validar los datos recibidos en la solicitud
         $request->validate([
-            // Coloca aquí las reglas de validación para los datos de la calificación
+            'rating' => 'required|integer|min:1|max:5',
         ]);
 
         // Actualizar los datos de la calificación con los recibidos en la solicitud
-        // $rating->campo = $request->input('campo');
+        $rating->rating = $request->input('rating');
+        
         // Guardar los cambios en la base de datos
         $rating->save();
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Comment;
@@ -8,59 +7,27 @@ use App\Http\Controllers\Controller;
 
 class CommentController extends Controller
 {
-    public function __construct()
+    public function store(Request $request)
     {
-        $this->middleware('auth:api');
+        $request->validate([
+            'comment' => 'required|string',
+            'comic_id' => 'required|exists:comics,id',
+        ]);
+
+        $comment = new Comment();
+        $comment->comment = $request->input('comment');
+        $comment->comic_id = $request->input('comic_id');
+        $comment->user_id = auth()->id(); // Asignar el ID del usuario autenticado
+        $comment->save();
+
+        return response()->json(['message' => 'Comentario creado exitosamente', 'comment' => $comment]);
     }
 
-    public function index()
+    public function getCommentsByComic($comic_id)
     {
-        $comments = Comment::all();
+        $comments = Comment::where('comic_id', $comic_id)->get();
+
         return response()->json(['comments' => $comments]);
     }
 
-    public function store(Request $request)
-    {
-        // Validar los datos recibidos en la solicitud
-        $request->validate([
-            // Aquí coloca las reglas de validación para los datos del comentario
-        ]);
-
-        // Crear un nuevo comentario con los datos recibidos en la solicitud
-        $comment = new Comment();
-        // Llenar el comentario con los datos recibidos en la solicitud
-        // $comment->campo = $request->input('campo');
-        // Guardar el comentario en la base de datos
-        $comment->save();
-
-        return response()->json(['message' => 'Comentario creado exitosamente']);
-    }
-
-    public function show(Comment $comment)
-    {
-        return response()->json(['comment' => $comment]);
-    }
-
-    public function update(Request $request, Comment $comment)
-    {
-        // Validar los datos recibidos en la solicitud
-        $request->validate([
-            // Aquí coloca las reglas de validación para los datos del comentario
-        ]);
-
-        // Actualizar los datos del comentario con los recibidos en la solicitud
-        // $comment->campo = $request->input('campo');
-        // Guardar los cambios en la base de datos
-        $comment->save();
-
-        return response()->json(['message' => 'Comentario actualizado exitosamente']);
-    }
-
-    public function destroy(Comment $comment)
-    {
-        // Eliminar el comentario de la base de datos
-        $comment->delete();
-
-        return response()->json(['message' => 'Comentario eliminado exitosamente']);
-    }
 }
