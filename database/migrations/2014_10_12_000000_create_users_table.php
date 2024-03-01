@@ -17,11 +17,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('username')->nullable(); // Modificar para permitir valores nulos
             $table->string('password');
+            $table->string('address')->nullable(); // Nueva columna para la dirección
+            $table->string('bank_holder')->nullable(); // Nueva columna para el titular de la cuenta
+            $table->string('bank_account_number')->nullable(); // Nueva columna para el número de cuenta
+            $table->string('bank_name')->nullable(); // Nueva columna para el nombre del banco
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
-        
     }
 
     /**
