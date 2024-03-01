@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['index', 'show']);
+        $this->middleware('auth:api')->except(['index', 'show', 'store']);
     }
 
     public function index()
@@ -31,10 +31,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'address' => 'nullable|string|max:255',
-            'bank_holder' => 'nullable|string|max:255',
-            'bank_account_number' => 'nullable|string|max:255',
-            'bank_name' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -46,11 +42,7 @@ class UserController extends Controller
             $user = new User();
             $user->name = $request->input('name');
             $user->email = $request->input('email');
-            $user->password = Hash::make($request->input('password'));
-            $user->address = $request->input('address');
-            $user->bank_holder = $request->input('bank_holder');
-            $user->bank_account_number = $request->input('bank_account_number');
-            $user->bank_name = $request->input('bank_name');
+            $user->password = bcrypt($request->input('password'));
             $user->save();
 
             return response()->json(['message' => 'Usuario creado exitosamente'], 201);
